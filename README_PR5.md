@@ -86,7 +86,7 @@ Serial.println(" !");
 Periféricos connectados : 2
 Conexiones : cada periférico connectado a: PIN 21(representa el SDA del bus), PIN 22(representa el SCL del bus), GND, Vcc (3.3 V)
 
-![Im1]([image_url](https://github.com/XaviHidalgo/PR5_PD_XavierHidalgo/blob/main/20240318_194215.jpg))
+![Im1](https://github.com/XaviHidalgo/PR5_PD_XavierHidalgo/blob/main/20240318_194215.jpg)
 
 
 ### Ejercicio Practico 2

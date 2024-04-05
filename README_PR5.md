@@ -84,7 +84,10 @@ Serial.println(" !");
 **CIRCUITO EN PRÁCTICA:**
 
 Periféricos connectados : 2
+
 Conexiones : cada periférico connectado a: PIN 21(representa el SDA del bus), PIN 22(representa el SCL del bus), GND, Vcc (3.3 V)
+
+Imagen del montage:
 
 ![Im1](https://github.com/XaviHidalgo/PR5_PD_XavierHidalgo/blob/main/20240318_194215.jpg)
 
@@ -93,4 +96,6 @@ Conexiones : cada periférico connectado a: PIN 21(representa el SDA del bus), P
 
 Este ejercicio nos pedía utilizar dos dispositivos, connectarlos al bus I2C y hacerlos funcionar. En mi caso he utilizado un sensor de temperatura y humedad y un display OLED.
 
-Después connectar los dos periféricos al bus, utilicé el programa anterior para comprobar que se establecia comunicación con el MP correctamente.
+Después connectar los dos periféricos al bus, utilicé el programa anterior para comprobar que se establecia comunicación con el MP correctamente. Tras eso y ver que los dos estan correctamente connectados, envié el siguiente programa:
+
+

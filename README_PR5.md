@@ -94,8 +94,97 @@ Imagen del montage:
 
 ### Ejercicio Practico 2
 
-Este ejercicio nos pedía utilizar dos dispositivos, connectarlos al bus I2C y hacerlos funcionar. En mi caso he utilizado un sensor de temperatura y humedad y un display OLED.
+Este ejercicio nos pedía utilizar dos dispositivos, connectarlos al bus I2C y hacerlos funcionar. En mi caso he utilizado un sensor de temperatura y humedad y un display OLED. El objetivo es hacer que el sensor capte la temperatura y humedad y la muestre por el display.
 
-Después connectar los dos periféricos al bus, utilicé el programa anterior para comprobar que se establecia comunicación con el MP correctamente. Tras eso y ver que los dos estan correctamente connectados, envié el siguiente programa:
+Después connectar los dos periféricos al bus, utilicé el programa del ejercicio práctico anterior para comprobar que se establecia comunicación con el MP correctamente. Tras ello y ver que los dos estan correctamente connectados, cargué el siguiente programa:
 
+**PROGRAMA:**
 
+``` cpp
+#include <Adafruit_AHTX0.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <Wire.h>
+
+#define SCREEN_WIDTH 128 // Ancho de la pantalla OLED, en píxeles
+#define SCREEN_HEIGHT 32 // Alto de la pantalla OLED, en píxeles
+
+#define OLED_RESET -1 // Pin de reset (o -1 si se comparte el pin de reset del Arduino)
+#define SCREEN_ADDRESS 0x3C ///< Ver la hoja de datos para la dirección; 0x3D para 128x64, 0x3C para 128x32
+
+Adafruit_AHTX0 aht;
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+void setup() {
+ Wire.begin();
+ // Wire1.begin(OLED_SDA, OLED_SCL);
+ Serial.begin(115200);
+ Serial.println("Adafruit AHT10/AHT20 demo!");
+
+ if (!aht.begin()) {
+   Serial.println("¡No se pudo encontrar el AHT! ¡Verifique la conexión!");
+   while (1) delay(10);
+ }
+ Serial.println("AHT10 o AHT20 encontrado");
+
+ if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+   Serial.println(F("¡Error al asignar memoria para SSD1306!"));
+   for(;;);
+ }
+
+ display.display();
+ delay(2000);
+ display.clearDisplay();
+}
+
+void loop() {
+ sensors_event_t humidity, temp;
+ aht.getEvent(&humidity, &temp); // Obtener los objetos de temperatura y humedad con datos actualizados
+
+ display.clearDisplay();
+ display.setTextSize(1);
+ display.setTextColor(SSD1306_WHITE);
+ display.setCursor(0, 0);
+ display.print("Temperatura: ");
+ display.println(temp.temperature);
+ display.print("Humedad: ");
+ display.println(humidity.relative_humidity);
+
+ display.display();
+ Serial.print("Temperatura: ");
+ Serial.print(temp.temperature);
+ Serial.println(" grados C");
+ Serial.print("Humedad: ");
+ Serial.print(humidity.relative_humidity);
+ Serial.println("% HR");
+
+ delay(500);
+}
+```
+
+Este programa ha sido realizado con ChatGPT y lo hemos ido retocando hasta que todo ha funcionado correctamente.
+
+Para cargar este programa al MP, es necessario instalar varias librerias en Platformio, estas son las primeras que salen en el código provinientes todas de Adafruit. Estas librerias nos permitiran programar los dispositivos, concreatmente Adafruit_AHTX0.h el sensor y Adafruit_SSD1306.h el display. Evidentemente, incuimos Wire.h como en la parte anterior para poder establecer el bus I2C. Vemos también una série de constantes definidas, estas son solamente **especificaciones**, vemos por ejemplo el ancho y alto del display, etc (ChatGPT ha decidido crearlas a parte con "defines"). Después de los "defines" creamos 2 variables más pero las definimos a partir de clases de las librerias de Adafruit, definimos así "aht" que será la variable que guardará los valores del sensor y "display" que guardará los del display.
+
+El void_setup() de este programa no tiene mucho a comentar, inicializamos bus série y I2C y, después, nos encontramos con una série de condicionales que comprueban la comunicación con los dispositivos. Para comprobar esto se usan unas funciones de las librerías bastante interesantes ya que, todo lo que representava la parte anterior de la práctica, aqui lo hacen con un solo if():
+
+``` cpp
+ if (!aht.begin()) {
+   Serial.println("¡No se pudo encontrar el AHT! ¡Verifique la conexión!"); //COMPROBAR SI EL **SENSOR** ESTA DISPONIBLE
+   while (1) delay(10);
+ }
+ Serial.println("AHT10 o AHT20 encontrado");
+
+ if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+   Serial.println(F("¡Error al asignar memoria para SSD1306!")); //COMPROBAR SI EL **DISPLAY** ESTA DISPONIBLE
+   for(;;);
+ }
+```
+
+En el void_loop(), creamos dos variables para guardar la temperatura y la humedad que capta el dispositivo en ese momento, consigue sus valores a partir de la función .getEvent(), función que forma parte de nustra variable "ath" tipo Adafruit_AHTX0 proviniente de la libreria Adafruit_AHTX0.h. Después sacaremos los valores obtenidos por el display y, ya que estamos, también por el puerto série. Utilizamos diferentes funciones de nuestra variable "display" tipo Adafruit_SSD1306 proviniente de la libreria Adafruit_SSD1306.h para mostrar los valores por el dispositivo.
+
+Finalmente y, punto muy importante, tras mostrar todos los datos hacemos un delay de 0,5 segundos. Esto significa que cada 0,5 segundos se actualizara la pantalla (sin tener en cuanta los tiempos de procesado que son mínimo) y obtendremos nuevos valores.
+
+Adjunto una imagen del montaje:
+
+![Im1](https://github.com/XaviHidalgo/PR5_PD_XavierHidalgo/blob/main/20240318_195001.jpg)

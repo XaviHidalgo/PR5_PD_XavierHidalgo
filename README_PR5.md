@@ -185,6 +185,6 @@ En el void_loop(), creamos dos variables para guardar la temperatura y la humeda
 
 Finalmente y, punto muy importante, tras mostrar todos los datos hacemos un delay de 0,5 segundos. Esto significa que cada 0,5 segundos se actualizara la pantalla (sin tener en cuanta los tiempos de procesado que son mínimo) y obtendremos nuevos valores.
 
-Adjunto una imagen del montaje:
+Adjunto una imagen del montaje y resultado:
 
 ![Im1](https://github.com/XaviHidalgo/PR5_PD_XavierHidalgo/blob/main/20240318_195001.jpg)

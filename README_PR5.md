@@ -49,7 +49,7 @@ Serial.println(" !");
 
 El anterior programa es un escáner o programa de reconocimiento de periféricos conectados a un bus I2C. 
 
-Para saber la cantidad de periféricos connectadosa nuestro bus (objetivo de un escáner), enviaremos a las 128 direcciones posibles (ya que el bus I2C guarda las direcciones de los dispositivos esclavos en 7 bits) una señal buscando otra señal de respuesta. Si es así, sabremos que hay un dispositivo connectado al bus y además su dirección para comunicarnos con él. Debido a las resistencias de pull-up que incluye el bus I2C, el circuito se mantiene en alta impedancia continuamente así que, si acertamos la dirección de un periférico, lo sabremos ya que como respuesta el periférico variará esta alta impedancia. Esta variación, en el programa la entenderemos como un '0'.
+Para saber la cantidad de periféricos connectadosa nuestro bus (objetivo de un escáner), enviaremos a las 128 direcciones posibles (ya que el bus I2C guarda las direcciones de los dispositivos esclavos en 7 bits) con el objetivo de recibir una señal de respuesta a una dirección. Si es así, sabremos que hay un dispositivo connectado al bus y además su dirección para comunicarnos con él. Debido a las resistencias de pull-up que incluye el bus I2C, el circuito se mantiene en alta impedancia continuamente así que, si acertamos la dirección de un periférico, lo sabremos ya que como respuesta el periférico variará esta alta impedancia. Esta variación, en el programa la entenderemos como un '0'.
 
 A continuación explico el funcionamiento del programa y la salida que tenemos por el pueto série tras su ejecucción:
 
